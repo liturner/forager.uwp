@@ -1,0 +1,263 @@
+﻿<Page
+    x:Class="Forager.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="MainPage_Loaded">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="pantry" IsSourceGrouped="True"/>
+        <CollectionViewSource x:Name="cookBooks" Source="{Binding CookBooks}"/>
+
+        <DataTemplate x:Name="recipeHeaderTemplate">
+            <Frame>
+                <TextBlock Text="{Binding Name}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+            </Frame>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <SplitView x:Name="mainSplitView" PanePlacement="Left" CompactPaneLength="48" OpenPaneLength="250" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideView">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1050"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="mainSplitView.DisplayMode" Value="CompactInline"/>
+                        <Setter Target="mainSplitView.IsPaneOpen" Value="True"/>
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="MediumWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="mainSplitView.DisplayMode" Value="CompactOverlay"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <SplitView.Pane>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel>
+                    <Button x:Name="TogglePaneButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="48" Height="48" Background="Transparent" Click="TogglePaneButton_Click" VerticalAlignment="Top"/>
+                    <ListView Name="MainNavigation" IsItemClickEnabled="True" IsMultiSelectCheckBoxEnabled="False" SelectionMode="Single" SelectionChanged="MainNavigation_SelectionChanged">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListViewItem Tapped="IHave_Tapped">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Glyph="&#xE719;" Width="48" Height="48"/>
+                                <TextBlock Text="Ingredients" FontSize="18" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Tapped="DayPlanner_Tapped">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE787;" Width="48" Height="48"/>
+                                <TextBlock Text="Meal Planner" FontSize="18" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Tapped="IWant_Tapped">
+                            <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Width="48" Height="48"/>
+                            <TextBlock Text="Recipes" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+
+                    <ListView x:Name="bookColumn" Visibility="Collapsed" ItemsSource="{Binding Source={StaticResource cookBooks}}" SelectionChanged="bookColumn_SelectionChanged" Margin="50,0,0,0" BorderThickness="0,1,0,0" BorderBrush="#FF494949" >
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="#FF494949"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="170"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" FontWeight="Light" Margin="5" TextWrapping="Wrap" Padding="0">Chicken Stuff</TextBlock>
+                                    <TextBlock Grid.Column="1" Text="{Binding DisplayedRecipes.Count}" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Light" Margin="5">23</TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                        <Rectangle Fill="Aqua">
+
+                        </Rectangle>
+                    </ListView>
+                </StackPanel>
+
+                <Rectangle x:Name="paneSpacer" HorizontalAlignment="Left" Width="250" Grid.Row="1" Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0"/>
+
+                <StackPanel x:Name="quickMenu" HorizontalAlignment="Left" Grid.Row="2" Width="250" Margin="0" Padding="0">
+                    <Button x:Name="btnAddCookBook" 
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Left" 
+                            Style="{StaticResource SplitViewPaneButtonStyle}" 
+                            Click="AddCookBook_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" Width="48" Height="48"/>
+                            <TextBlock FontFamily="Segeo UI"  Text="Create CookBook" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btnDeleteCookBook"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Left" 
+                            Style="{StaticResource SplitViewPaneButtonStyle}"
+                            Click="DeleteCookBook_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Width="48" Height="48"/>
+                            <TextBlock FontFamily="Segeo UI" Text="Delete CookBook" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button x:Name="btnSettings"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Left" 
+                            Style="{StaticResource SplitViewPaneButtonStyle}"
+                            Click="ShowSettings_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Width="48" Height="48"/>
+                            <TextBlock FontFamily="Segeo UI" Text="Settings" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <CommandBar Name="MainCommandBar" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    
+                    <AppBarButton Name="btnAddToMealPlan" Label="Add To Meal Planner" Icon="Calendar" Click="AddToMealPlanner_Click" IsEnabled="False"/>
+                    <AppBarButton Name="btnPrint" Label="Print" Icon="Page2" Click="Print_Click" IsEnabled="False"/>
+                    <AppBarSeparator/>
+                    <AppBarButton Name="btnDeleteIngredient" Click="DeleteIngredient_Click" Icon="Delete" Label="Delete Ingredient"/>
+                    <AppBarButton Name="btnCreateIngredient" Click="CreateIngredient_Click" Icon="Add" Label="Add Ingredient"/>
+                    <AppBarButton Name="btnDeleteMealPlan" Click="DeleteMealPlan_Click" Icon="Delete" Label="Delete Day Plan"/>
+                    <AppBarButton Name="btnCreateMealPlan" Click="CreateMealPlan_Click" Icon="Add" Label="Add Day Plan"/>
+                    <AppBarButton Name="btnDeleteRecipe" Click="DeleteRecipe_Click"  Icon="Delete" Label="Delete Recipe" IsEnabled="False"/>
+                    <AppBarButton Name="btnCreateRecipe" Click="CreateRecipe_Click" Icon="Add" Label="Add Recipe"/>
+                    <AppBarSeparator/>
+                    <AppBarToggleButton Name="tglEdit" Icon="Edit" Label="Edit" Checked="AppBarToggleButton_Checked" Unchecked="AppBarToggleButton_Unchecked" IsEnabled="False"/>
+                </CommandBar>
+
+                <!--This should become the only one frame. All other things should be navigated pages-->
+                <Frame Name="mainFrame" Grid.Row="1" Visibility="Collapsed"/>
+                <Frame Name="exploreFrame" Grid.Row="1"  Visibility="Visible">
+
+                    <Grid x:Name="library">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="260" Width="10*"/>
+                            <ColumnDefinition MinWidth="500" Width="20*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Center Column-->
+                        <Grid Grid.Column="0" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="48"/>
+                                <RowDefinition Height="48"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <AutoSuggestBox Name="searchAndFilterRow" VerticalAlignment="Stretch" QueryIcon="Find"/>
+
+                            <Grid BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarBorderThemeBrush}" Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="20,0,16,0" FontWeight="ExtraBold" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" VerticalAlignment="Center" TextWrapping="WrapWholeWords" Text="{Binding Name}"/>
+                                <ComboBox Grid.Column="1" x:Name="globalFilter" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" SelectedIndex="0" SelectionChanged="globalFilter_SelectionChanged" VerticalAlignment="Stretch">
+                                    <ComboBoxItem>
+                                        <TextBlock Foreground="{ThemeResource SystemControlHighlightListAccentLowBrush}" FontWeight="Bold">All</TextBlock>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        <TextBlock Foreground="{ThemeResource SystemControlHighlightListAccentLowBrush}" FontWeight="Bold">I Can Make</TextBlock>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        <TextBlock Foreground="{ThemeResource SystemControlHighlightListAccentLowBrush}" FontWeight="Bold">So Close!</TextBlock>
+                                    </ComboBoxItem>
+                                </ComboBox>
+                            </Grid>
+                            
+                            <!--RecipeColumn expects a cookbook to be bound-->
+                            <SemanticZoom Grid.Row="2" Grid.RowSpan="1" Visibility="Collapsed" x:Name="ingredientListZoom">
+                                <SemanticZoom.ZoomedInView>
+                                    <ListView x:Name="ingredientList" ItemsSource="{Binding Source={StaticResource pantry}}" SelectionMode="Multiple" SelectionChanged="evt_IngredientsSelectionChanged">
+                                        <ListView.GroupStyle>
+                                            <GroupStyle>
+                                                <GroupStyle.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text='{Binding Key}' Foreground="{StaticResource ApplicationForegroundThemeBrush}" Margin="5" FontSize="18" FontFamily="Segoe UI" FontWeight="Light" />
+                                                    </DataTemplate>
+                                                </GroupStyle.HeaderTemplate>
+                                            </GroupStyle>
+                                        </ListView.GroupStyle>
+                                    </ListView>
+                                </SemanticZoom.ZoomedInView>
+                                <SemanticZoom.ZoomedOutView>
+
+                                    <ListView>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Group.Key}" FontFamily="Segoe UI" FontWeight="Light" FontSize="24"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Margin" Value="4" />
+                                                <Setter Property="Padding" Value="10" />
+                                                <Setter Property="BorderBrush" Value="Gray" />
+                                                <Setter Property="BorderThickness" Value="1" />
+                                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+
+                                    </ListView>
+
+                                </SemanticZoom.ZoomedOutView>
+                            </SemanticZoom>
+                            <ListView Grid.Row="2" Grid.RowSpan="1" Visibility="Collapsed" x:Name="recipeColumn" ItemsSource="{Binding}" ItemTemplate="{StaticResource recipeHeaderTemplate}" SelectionChanged="recipeColumn_SelectionChanged"/>
+                        </Grid>
+
+                        <!--Right Column-->
+                        <ScrollViewer Grid.Column="1">
+                            <Frame x:Name="detailColumn"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
+</Page>

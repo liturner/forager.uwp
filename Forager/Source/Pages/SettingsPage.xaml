@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="Forager.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="20">
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}">SETTINGS</TextBlock>
+        <TextBlock Style="{StaticResource HeaderTextBlockStyle}">Theme</TextBlock>
+        <TextBlock Style="{StaticResource BaseTextBlockStyle}">Requires Forager to be restarted</TextBlock>
+        <RadioButton Name="radLight" Click="LightTheme_Click">Light</RadioButton>
+        <RadioButton Name="radDark" Click="DarkTheme_Click">Dark</RadioButton>
+    </StackPanel>
+</Page>

@@ -1,0 +1,21 @@
+﻿<ContentDialog
+    x:Class="Forager.CookBookDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CookBook"
+    PrimaryButtonText="Accept"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <StackPanel>
+        <TextBlock Margin="0,0,0,4">Title</TextBlock>
+        <TextBox Margin="0,0,0,24" TextChanged="txtName_TextChanged" Text="{Binding Path=Name, Mode=TwoWay}"/>
+        <TextBlock Margin="0,0,0,4">Description</TextBlock>
+        <TextBox Margin="0,0,0,24" Height="96" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=TwoWay}"/>
+    </StackPanel>
+</ContentDialog>

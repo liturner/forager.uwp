@@ -1,0 +1,2 @@
+MainPackage=D:\pro\Forager\Forager\bin\x64\Release\Upload\Forager_1.1.0.0_x64.appx
+SymbolPackage=D:\pro\Forager\Forager\AppPackages\Forager_1.1.0.0\Forager_1.1.0.0_x64.appxsym

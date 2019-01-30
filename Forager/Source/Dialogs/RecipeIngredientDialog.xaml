@@ -1,0 +1,66 @@
+﻿<ContentDialog
+    x:Class="Forager.RecipeIngredientDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Recipe Ingredient"
+    PrimaryButtonText="Accept"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Loading="ContentDialog_Loading">
+    
+    <StackPanel>
+
+        <TextBlock TextWrapping="Wrap">
+            Use this area to select the ingredient you wish to add or modify.<LineBreak/>
+            <LineBreak/>
+            Select your ingredient from the search area below and then specify the type of measure you wish to specify this ingredient in (Users can change this if they wish when viewing your Recipe).
+        </TextBlock>
+
+        <StackPanel>
+            <AutoSuggestBox Text="{Binding Ingredient.Name}" QueryIcon="Find" TextChanged="AutoSuggestBox_TextChanged" SuggestionChosen="AutoSuggestBox_SuggestionChosen" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+            <ListView ItemsSource="{Binding}" MaxHeight="190"/>
+        </StackPanel>
+                
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock>Quantity</TextBlock>
+                <TextBox Text="{Binding Quantity, Mode=TwoWay}" InputScope="Number" Width="100"></TextBox>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock>Units</TextBlock>
+                <ComboBox SelectedValue="{Binding Unit, Mode=TwoWay}">
+                    <x:String>cm</x:String>
+                    <x:String>cup</x:String>
+                    <x:String>fl oz</x:String>
+                    <x:String>g</x:String>
+                    <x:String>handful</x:String>
+                    <x:String>inch</x:String>
+                    <x:String>kg</x:String>
+                    <x:String>l</x:String>
+                    <x:String>lb</x:String>
+                    <x:String>ml</x:String>
+                    <x:String>oz</x:String>
+                    <x:String>slice</x:String>
+                    <x:String>tblsp</x:String>
+                    <x:String>tsp</x:String>
+                    <x:String>unit</x:String>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel>
+            <TextBlock>Notes</TextBlock>
+            <TextBox 
+                Text="{Binding Notes, Mode=TwoWay}"
+                MaxLength="32"/>
+        </StackPanel>
+        
+        <CheckBox Content="Required" IsChecked="{Binding Required, Mode=TwoWay}"/>
+
+    </StackPanel>
+</ContentDialog>

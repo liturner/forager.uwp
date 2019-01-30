@@ -1,0 +1,1 @@
+MainPackage=D:\pro\Forager\Forager\bin\x64\Release\Forager_1.1.3.0_x64.appx

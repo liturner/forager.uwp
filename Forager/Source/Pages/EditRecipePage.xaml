@@ -1,0 +1,108 @@
+﻿<Page
+    x:Class="Forager.EditRecipePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Title</TextBlock>
+            <TextBox Margin="0,0,0,24" Text="{Binding Name, Mode=TwoWay}" FontSize="21.333" FontWeight="Bold" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <TextBlock Grid.Column="1" Margin="20,10,10,10" FontWeight="ExtraLight" TextWrapping="Wrap">The title of the recipe. Memorable names are short, but descriptive names help find the recipes you want quickly. Finding a nice balance is the key to a memorable recipe.</TextBlock>
+
+        <!--DESCRIPTION-->
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="1">
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Description</TextBlock>
+            <TextBox Margin="0,0,0,24" Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True"/>
+        </StackPanel>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="20,10,10,10" FontWeight="ExtraLight" TextWrapping="Wrap">Here is one of the first chances you get to get the taste buds tingling. The description will be the first thing most users will be reading. They will want to know how the dish tasts, the textures and the little details. Be descriptive and thorough.</TextBlock>
+
+        <!--SERVINGS-->
+        <StackPanel Grid.Row="2">
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Servings</TextBlock>
+            <TextBox Text="{Binding Quantity, Mode=TwoWay}" HorizontalAlignment="Left" Margin="0,0,0,24" Width="100px"/>
+            <ComboBox SelectedValue="{Binding Unit, Mode=TwoWay}">
+                <x:String>cm</x:String>
+                <x:String>cup</x:String>
+                <x:String>fl oz</x:String>
+                <x:String>g</x:String>
+                <x:String>handful</x:String>
+                <x:String>inch</x:String>
+                <x:String>kg</x:String>
+                <x:String>l</x:String>
+                <x:String>lb</x:String>
+                <x:String>ml</x:String>
+                <x:String>oz</x:String>
+                <x:String>slice</x:String>
+                <x:String>tblsp</x:String>
+                <x:String>tsp</x:String>
+                <x:String>unit</x:String>
+            </ComboBox>
+        </StackPanel>
+
+        <TextBlock Grid.Column="1" Grid.Row="2" Margin="20,10,10,10" FontWeight="ExtraLight" TextWrapping="Wrap"></TextBlock>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Ingredients</TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnAddIngredient" Click="btnAddRecipeIngredient_Click">
+                    <SymbolIcon Symbol="Add"/>
+                </Button>
+                <Button x:Name="btnDeleteIngredient" Click="DeleteRecipeIngredient_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Delete"/>
+                </Button>
+                <Button x:Name="btnEditIngredient" Click="btnEditRecipeIngredient_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Edit"/>
+                </Button>
+            </StackPanel>
+            <GridView x:Name="recipeIngredientList" ItemsSource="{Binding RecipeIngredients}" ItemTemplate="{StaticResource recipeIngredientTemplate}" SelectionChanged="recipeIngredientList_SelectionChanged"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,24">
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Directions</TextBlock>
+
+            <RelativePanel  HorizontalAlignment="Stretch">
+                <RelativePanel.Resources>
+                    <Style TargetType="AppBarButton">
+                        <Setter Property="IsCompact" Value="True"/>
+                    </Style>
+                </RelativePanel.Resources>
+                <AppBarButton Icon="Bold" Click="BoldButton_Click" ToolTipService.ToolTip="Bold" RelativePanel.LeftOf="italicButton" Margin="0,0,8,0"/>
+                <AppBarButton x:Name="italicButton" Icon="Italic" Click="ItalicButton_Click" ToolTipService.ToolTip="Italic" RelativePanel.LeftOf="underlineButton" Margin="0,0,8,0"/>
+                <AppBarButton x:Name="underlineButton" Icon="Underline" Click="UnderlineButton_Click" ToolTipService.ToolTip="Underline" RelativePanel.AlignRightWithPanel="True"/>
+
+                <RichEditBox Name="rebDirections" 
+                     PlaceholderText="Detail here how to construct the dish" 
+                     TextWrapping="Wrap" 
+                      
+                     AcceptsReturn="True" LostFocus="rebDirections_LostFocus"  RelativePanel.Below="italicButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" IsColorFontEnabled="False"/>
+            </RelativePanel>
+
+            
+        </StackPanel>
+      
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2">
+            <TextBlock Margin="0,0,0,4" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}">Main Image</TextBlock>
+            <TextBox Text="{Binding MainImage, Mode=TwoWay}" TextWrapping="Wrap" Margin="0,0,0,24"/>
+        </StackPanel>
+    </Grid>
+</Page>

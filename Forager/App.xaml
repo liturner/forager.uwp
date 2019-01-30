@@ -1,0 +1,32 @@
+﻿<Application
+    x:Class="Forager.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forager">
+    
+    
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary>
+                    <DataTemplate x:Key="recipeIngredientTemplate">
+                        <StackPanel HorizontalAlignment="Left" Margin="1">
+                            <TextBlock  Width="200" TextWrapping="Wrap">
+                                <Run Text="{Binding Name}" FontWeight="Bold"/>
+                                <Run Text="{Binding Notes}" FontWeight="Light" FontStyle="Italic"/>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Quantity}" FontWeight="Normal" FontStyle="Italic"/>
+                                <TextBlock Text="{Binding Unit}" FontWeight="Normal" FontStyle="Italic"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</Application>
